@@ -15,7 +15,6 @@ class MyDocument extends Document {
         return (
             <Html lang="en">
                 <Head>
-                    <title>App Static Pokemon</title>
                     {CssBaseline.flush()}
                 </Head>
                 <body>
