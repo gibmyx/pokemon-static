@@ -1,6 +1,5 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {MainLayout} from "../../components/layouts";
-import {useRouter} from "next/router";
 import {GetStaticProps, GetStaticPaths, NextPage} from "next";
 import {pokeApi} from "../../api";
 import {Pokemon} from "../../interfaces";
@@ -14,8 +13,16 @@ const Pokemon:NextPage<Props> = ({pokemon}) => {
     // const router = useRouter()
     // console.log(router.query)
 
+    const onToggleFavorite = () => {
+        console.log(pokemon.id)
+    }
+
+    useEffect(() => {
+
+    }, []);
+
     return (
-        <MainLayout title="Algun pokemon">
+        <MainLayout title={pokemon.name}>
             <Grid.Container
                 css={{marginTop: '5px'}}
                 gap={2}
@@ -43,6 +50,7 @@ const Pokemon:NextPage<Props> = ({pokemon}) => {
                             <Button
                                 color="gradient"
                                 ghost
+                                onClick={onToggleFavorite}
                             >
                                 Guardar en favoritos
                             </Button>
