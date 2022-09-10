@@ -1,20 +1,24 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {MainLayout} from "../../components/layouts";
 import {GetStaticProps, GetStaticPaths, NextPage} from "next";
 import {pokeApi} from "../../api";
 import {Pokemon} from "../../interfaces";
 import {Button, Card, Grid, Text, Image, Container} from "@nextui-org/react";
+import {localFavorites} from "../../utils";
 
 interface Props {
     pokemon: Pokemon
 }
 
-const Pokemon:NextPage<Props> = ({pokemon}) => {
+const Pokemon: NextPage<Props> = ({pokemon}) => {
     // const router = useRouter()
     // console.log(router.query)
 
+    const [isInFavorite, setIsInFavorite] = useState(localFavorites.existInFavorite(pokemon.id));
+
     const onToggleFavorite = () => {
-        console.log(pokemon.id)
+        localFavorites.toggleFavorite(pokemon.id)
+        setIsInFavorite(!isInFavorite)
     }
 
     useEffect(() => {
@@ -45,14 +49,18 @@ const Pokemon:NextPage<Props> = ({pokemon}) => {
 
                 <Grid xs={12} sm={8}>
                     <Card>
-                        <Card.Header css={{display:'flex', justifyContent: 'space-between'}}>
+                        <Card.Header css={{display: 'flex', justifyContent: 'space-between'}}>
                             <Text h1>{pokemon.name}</Text>
                             <Button
                                 color="gradient"
                                 ghost
                                 onClick={onToggleFavorite}
                             >
-                                Guardar en favoritos
+                                {
+                                    isInFavorite
+                                        ? 'Remover de favorito'
+                                        : 'Guardar en favoritos'
+                                }
                             </Button>
                         </Card.Header>
                         <Card.Body>
@@ -93,9 +101,9 @@ const Pokemon:NextPage<Props> = ({pokemon}) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
-    const pokemons151 = [...Array(151)].map((value, index) => `${index+1}`)
+    const pokemons151 = [...Array(151)].map((value, index) => `${index + 1}`)
 
-    return{
+    return {
         paths: pokemons151.map(id => ({
             params: {id}
         })),
@@ -105,7 +113,7 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
 
 
 export const getStaticProps: GetStaticProps = async ({params}) => {
-    const {id} = params as {id: string}
+    const {id} = params as { id: string }
 
     const {data} = await pokeApi.get<Pokemon>(`/pokemon/${id}`)
     return {
