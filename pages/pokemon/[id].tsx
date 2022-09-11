@@ -18,7 +18,7 @@ const Pokemon: NextPage<Props> = ({pokemon}) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
-    const pokemons151 = [...Array(10)].map((value, index) => `${index + 1}`)
+    const pokemons151 = [...Array(151)].map((value, index) => `${index + 1}`)
 
     return {
         paths: pokemons151.map(id => ({

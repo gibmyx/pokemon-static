@@ -23,7 +23,7 @@ const Home: NextPage<Props> = ({pokemons}) => {
 
 export const getStaticProps: GetStaticProps = async (context) => {
 
-    const {data} = await pokeApi.get<PokemonResponse>('/pokemon?limit=10')
+    const {data} = await pokeApi.get<PokemonResponse>('/pokemon?limit=151')
 
     const pokemons: SmallPokemon[] = data.results.map((pokemon: SmallPokemon, index) => {
         const id = index+1

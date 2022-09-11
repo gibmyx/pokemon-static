@@ -14,7 +14,7 @@ const PokemonByNamePage: FC<Props> = ({pokemon}) => {
 };
 
 export const getStaticPaths: GetStaticPaths = async (context) => {
-    const {data} = await pokeApi.get<PokemonsNameList>(`/pokemon?limit=10`)
+    const {data} = await pokeApi.get<PokemonsNameList>(`/pokemon?limit=151`)
     return {
         paths: data.results.map((pokemon: PokemonName) => ({
             params: {name: pokemon.name}
