@@ -20,7 +20,7 @@ export const MainLayout = ({children, title}: Props) => {
 
                 <meta property="og:title" content={`Informacion sobre ${title}`} />
                 <meta property="og:description" content={`esta es la pagina sobre ${title}`} />
-                <meta property="og:image" content={`${origin}/img/banner.png`} />
+                <meta property="og:image" content={`${origin}/banner.png`} />
             </Head>
 
             {/*Navbar*/}
