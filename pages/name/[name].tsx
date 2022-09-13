@@ -4,6 +4,7 @@ import {pokeApi} from "../../api";
 import {Pokemon, PokemonName, PokemonsNameList} from "../../interfaces";
 import {GetStaticPaths, GetStaticProps} from "next";
 import {PokemonDetails} from "../../components/ui/PokemonDetails";
+import {getPokemonInfo} from "../../utils";
 
 type Props = {
     pokemon: Pokemon
@@ -19,20 +20,30 @@ export const getStaticPaths: GetStaticPaths = async (context) => {
         paths: data.results.map((pokemon: PokemonName) => ({
             params: {name: pokemon.name}
         })),
-        fallback: false
+        // fallback: false
+        fallback: 'blocking'
     }
 }
+
 export const getStaticProps: GetStaticProps = async ({params}) => {
-    const pokemon = params as {name: string}
-    const {data} = await pokeApi.get<Pokemon>(`/pokemon/${pokemon.name}`)
-    return {
-        props: {
-            pokemon: {
-                id: data.id,
-                name: data.name,
-                sprites: data.sprites
+    const {name} = params as {name: string}
+
+    const pokemon = await getPokemonInfo(name);
+
+    if (!pokemon) {
+        return {
+            redirect: {
+                destination: '/',
+                permanent: false
             }
         }
+    }
+
+    return {
+        props: {
+            pokemon
+        },
+        revalidate: 1800
     }
 }
 
